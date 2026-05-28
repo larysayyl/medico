@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ItabunaMed - Dashboard</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f6e56 0%, #1d9e75 40%, #2a85c7 100%);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      top: -150px;
+      left: -100px;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      bottom: -120px;
+      right: -80px;
+      pointer-events: none;
+    }
+
+    /* ── NAVBAR ── */
+
+    .navbar-custom {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      height: 70px;
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-inner {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+
+    .logo-icon i {
+      font-size: 18px;
+      color: white;
+    }
+
+    .logo-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.3px;
+    }
+
+    .logo-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      margin-top: 1px;
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 30px;
+      padding: 6px 14px 6px 8px;
+    }
+
+    .user-avatar {
+      width: 30px;
+      height: 30px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-avatar i {
+      font-size: 15px;
+      color: white;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: white;
+    }
+
+    .btn-sair {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-sair:hover {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+
+    /* ── MAIN ── */
+
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 36px 24px 60px;
+    }
+
+    /* ── STATS ── */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 18px;
+      padding: 20px 22px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: background 0.2s;
+    }
+
+    .stat-card:hover {
+      background: rgba(255,255,255,0.18);
+    }
+
+    .stat-icon {
+      width: 46px;
+      height: 46px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-icon i {
+      font-size: 22px;
+      color: white;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+    }
+
+    /* ── FORM ── */
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title i {
+      font-size: 18px;
+      opacity: 0.8;
+    }
+
+    .glass-card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 32px;
+    }
+
+    .form-label-custom {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-control-custom {
+      width: 100%;
+      height: 48px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 14px;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .form-control-custom::placeholder {
+      color: rgba(255,255,255,0.45);
+    }
+
+    .form-control-custom:focus {
+      border-color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.18);
+    }
+
+    .form-control-custom option {
+      background: #0f6e56;
+      color: white;
+    }
+
+    .btn-solicitar {
+      width: 100%;
+      height: 50px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.95);
+      color: #0f6e56;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .btn-solicitar:hover {
+      background: white;
+    }
+
+    .btn-solicitar:active {
+      transform: scale(0.98);
+    }
+
+    /* ── CARDS CONSULTA ── */
+
+    .consultas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .consulta-card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .consulta-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 20px 20px 0 0;
+    }
+
+    .consulta-card:hover {
+      background: rgba(255,255,255,0.18);
+      transform: translateY(-3px);
+    }
+
+    .card-paciente {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .card-especialidade {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .card-data {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .status-ok {
+      background: rgba(34,197,94,0.2);
+      color: #86efac;
+      border: 1px solid rgba(34,197,94,0.3);
+    }
+
+    .status-no {
+      background: rgba(239,68,68,0.2);
+      color: #fca5a5;
+      border: 1px solid rgba(239,68,68,0.3);
+    }
+
+    .btn-agendar {
+      width: 100%;
+      height: 42px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: background 0.2s;
+      margin-bottom: 10px;
+    }
+
+    .btn-agendar:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .btn-indisponivel {
+      width: 100%;
+      height: 42px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.35);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: not-allowed;
+      border: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 10px;
+    }
+
+    .card-acoes {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-editar {
+      flex: 1;
+      height: 38px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.8);
+      font-size: 13px;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .btn-excluir {
+      flex: 1;
+      height: 38px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(239,68,68,0.15);
+      color: #fca5a5;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      border: 1px solid rgba(239,68,68,0.25);
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .btn-editar:hover { background: rgba(255,255,255,0.18); }
+    .btn-excluir:hover { background: rgba(239,68,68,0.25); }
+
+    /* ── EMPTY STATE ── */
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .empty-state i {
+      font-size: 48px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .empty-state p {
+      font-size: 15px;
+    }
+
+    /* ── RESPONSIVO ── */
+
+    @media (max-width: 768px) {
+      .glass-card { padding: 20px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .navbar-right .user-pill { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar-custom">
+    <div class="navbar-inner">
+      <div class="logo-wrap">
+        <div class="logo-icon"><i class="bi bi-heart-pulse-fill"></i></div>
+        <div>
+          <div class="logo-text">ItabunaMed</div>
+          <div class="logo-sub">Sistema de vagas médicas • </div>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <div class="user-pill">
+          <div class="user-avatar"><i class="bi bi-person-fill"></i></div>
+          <span class="user-name" id="nomeUsuario">Paciente</span>
+        </div>
+        <a href="index.html" class="btn-sair" onclick="sair()">
+          <i class="bi bi-box-arrow-right"></i> Sair
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="bi bi-calendar2-heart"></i></div>
+        <div>
+          <div class="stat-label">Total de consultas</div>
+          <div class="stat-value" id="statTotal">0</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="bi bi-check-circle"></i></div>
+        <div>
+          <div class="stat-label">Vagas disponíveis</div>
+          <div class="stat-value" id="statDisponiveis">0</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="bi bi-x-circle"></i></div>
+        <div>
+          <div class="stat-label">Sem vagas</div>
+          <div class="stat-value" id="statSemVaga">0</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="bi bi-clock-history"></i></div>
+        <div>
+          <div class="stat-label">Aguardando</div>
+          <div class="stat-value" id="statAguardando">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <p class="section-title"><i class="bi bi-plus-circle"></i> Solicitar nova consulta</p>
+    <div class="glass-card">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label-custom">Nome do paciente</label>
+          <input type="text" class="form-control-custom" id="nome" placeholder="Nome completo">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label-custom">Especialidade</label>
+          <select class="form-control-custom" id="especialidade">
+            <option value="">Selecione</option>
+            <option>Cardiologista</option>
+            <option>Psicólogo</option>
+            <option>Ginecologista</option>
+            <option>Pediatra</option>
+            <option>Dermatologista</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label-custom">Data preferida</label>
+          <input type="date" class="form-control-custom" id="data">
+        </div>
+        <div class="col-12">
+          <button class="btn-solicitar" onclick="adicionarConsulta()">
+            <i class="bi bi-send"></i> Solicitar consulta
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LISTA -->
+    <p class="section-title"><i class="bi bi-list-ul"></i> Minhas consultas</p>
+    <div class="consultas-grid" id="listaConsultas">
+      <div class="empty-state">
+        <i class="bi bi-calendar2-x"></i>
+        <p>Nenhuma consulta solicitada ainda.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Carrega nome do usuário logado
+    const pacienteLogado = JSON.parse(localStorage.getItem('pacienteLogado'));
+    if (!pacienteLogado) {
+      window.location.href = 'index.html';
+    } else {
+      document.getElementById('nomeUsuario').textContent = pacienteLogado.nome.split(' ')[0];
+    }
+
+    let consultas = JSON.parse(localStorage.getItem('consultas')) || [];
+
+    function atualizarStats() {
+      const total = consultas.length;
+      const disponiveis = consultas.filter(c => c.vaga).length;
+      const semVaga = consultas.filter(c => !c.vaga).length;
+      document.getElementById('statTotal').textContent = total;
+      document.getElementById('statDisponiveis').textContent = disponiveis;
+      document.getElementById('statSemVaga').textContent = semVaga;
+      document.getElementById('statAguardando').textContent = disponiveis;
+    }
+
+    function mostrarConsultas() {
+      const lista = document.getElementById('listaConsultas');
+
+      if (consultas.length === 0) {
+        lista.innerHTML = `
+          <div class="empty-state" style="grid-column:1/-1;">
+            <i class="bi bi-calendar2-x"></i>
+            <p>Nenhuma consulta solicitada ainda.</p>
+          </div>`;
+        atualizarStats();
+        return;
+      }
+
+      lista.innerHTML = '';
+
+      consultas.forEach((c, i) => {
+        const dataFormatada = c.data
+          ? new Date(c.data + 'T00:00:00').toLocaleDateString('pt-BR')
+          : '—';
+
+        const statusHTML = c.vaga
+          ? `<div class="status-badge status-ok"><i class="bi bi-check-circle-fill"></i> Vaga disponível</div>
+             <button class="btn-agendar" onclick="agendarConsulta(${i})"><i class="bi bi-calendar-check"></i> Agendar consulta</button>`
+          : `<div class="status-badge status-no"><i class="bi bi-x-circle-fill"></i> Sem vagas disponíveis</div>
+             <button class="btn-indisponivel" disabled>Indisponível</button>`;
+
+        lista.innerHTML += `
+          <div class="consulta-card">
+            <div class="card-paciente">${c.nome}</div>
+            <div class="card-especialidade"><i class="bi bi-heart-pulse"></i> ${c.especialidade}</div>
+            <div class="card-data"><i class="bi bi-calendar3"></i> ${dataFormatada}</div>
+            ${statusHTML}
+            <div class="card-acoes">
+              <button class="btn-editar" onclick="editarConsulta(${i})"><i class="bi bi-pencil"></i> Editar</button>
+              <button class="btn-excluir" onclick="excluirConsulta(${i})"><i class="bi bi-trash"></i> Excluir</button>
+            </div>
+          </div>`;
+      });
+
+      atualizarStats();
+    }
+
+    function adicionarConsulta() {
+      const nome = document.getElementById('nome').value.trim();
+      const especialidade = document.getElementById('especialidade').value;
+      const data = document.getElementById('data').value;
+
+      if (!nome || !especialidade || !data) {
+        alert('Preencha todos os campos!');
+        return;
+      }
+
+      consultas.push({ nome, especialidade, data, vaga: Math.random() > 0.5 });
+      localStorage.setItem('consultas', JSON.stringify(consultas));
+      mostrarConsultas();
+
+      document.getElementById('nome').value = '';
+      document.getElementById('especialidade').value = '';
+      document.getElementById('data').value = '';
+    }
+
+    function excluirConsulta(i) {
+      if (confirm('Deseja excluir esta consulta?')) {
+        consultas.splice(i, 1);
+        localStorage.setItem('consultas', JSON.stringify(consultas));
+        mostrarConsultas();
+      }
+    }
+
+    function editarConsulta(i) {
+      const novoNome = prompt('Novo nome:', consultas[i].nome);
+      if (novoNome !== null && novoNome.trim() !== '') {
+        consultas[i].nome = novoNome.trim();
+        localStorage.setItem('consultas', JSON.stringify(consultas));
+        mostrarConsultas();
+      }
+    }
+
+    function agendarConsulta(i) {
+      alert('Consulta agendada com sucesso para ' + consultas[i].nome + '!');
+    }
+
+    function sair() {
+      localStorage.removeItem('pacienteLogado');
+    }
+
+    mostrarConsultas();
+  </script>
+
+</body>
+</html>
